@@ -1,6 +1,8 @@
 """Deterministic selection: importance weighting, person quotas, and diversity."""
 from __future__ import annotations
 
+import math
+
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
@@ -37,7 +39,7 @@ def parse_priorities(parts: list[str], *, kind: str = "weight") -> dict[str, flo
             number = float(raw)
         except ValueError as exc:
             raise ValueError(f"Invalid number: {part}") from exc
-        if number < 0 or number != number or number == float("inf"):
+        if number < 0 or not math.isfinite(number):
             raise ValueError(f"Value must be a finite nonnegative number: {part}")
         if kind == "quota" and not number.is_integer():
             raise ValueError(f"Quota must be an integer: {part}")

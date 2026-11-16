@@ -1,7 +1,15 @@
 import json
 
 import pytest
-from photo_curator.catalog import connect, photo, tag_person, upsert_photo, photos, recognized_people
+
+from photo_curator.catalog import (
+    connect,
+    photo,
+    photos,
+    recognized_people,
+    tag_person,
+    upsert_photo,
+)
 from photo_curator.selector import choose, parse_priorities
 
 
@@ -10,14 +18,14 @@ def make_photos(tmp_path, n=8):
     for i in range(n):
         src = tmp_path / f"photo-{i}.jpg"
         src.write_bytes(bytes([i]))
-        record = dict(
-            path=str(src), size_bytes=1, mtime_ns=100, width=1200, height=800,
-            taken_at=f"2026:11:{i+1:02d} 10:00:00", dhash=f"{i*100000:016x}",
-            sharpness=0.6, exposure=0.8, quality=70 + i,
-            face_count=1, people_json=json.dumps(["Mom"] if i < 3 else ["Dad"]),
-            face_confidence_json="{}", category="family", caption="", vision_score=None,
-            vision_model=None, face_revision=None, error=None,
-        )
+        record = {
+            "path": str(src), "size_bytes": 1, "mtime_ns": 100, "width": 1200, "height": 800,
+            "taken_at": f"2026:11:{i+1:02d} 10:00:00", "dhash": f"{i*100000:016x}",
+            "sharpness": 0.6, "exposure": 0.8, "quality": 70 + i,
+            "face_count": 1, "people_json": json.dumps(["Mom"] if i < 3 else ["Dad"]),
+            "face_confidence_json": "{}", "category": "family", "caption": "", "vision_score": None,
+            "vision_model": None, "face_revision": None, "error": None,
+        }
         upsert_photo(db, record)
     return db
 

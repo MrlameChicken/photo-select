@@ -7,6 +7,7 @@ import json
 import urllib.error
 import urllib.parse
 import urllib.request
+
 from PIL import Image
 
 CATEGORIES = {"family", "group", "portrait", "travel", "landscape", "food", "pet", "other"}
@@ -72,7 +73,7 @@ def evaluate(image: Image.Image, *, model: str = "gemma3:4b", host: str = "http:
     payload = raw.get("message", {}).get("content", "{}")
     data = json.loads(payload) if isinstance(payload, str) else payload
     if not isinstance(data, dict):
-        raise ValueError("Vision model returned non-object JSON")
+        raise ValueError("Vision model returned non-object JSON")  # noqa: TRY004
     category = str(data.get("category", "other")).lower().strip()
     if category not in CATEGORIES:
         category = "other"

@@ -9,7 +9,16 @@ from pathlib import Path
 
 from . import __version__
 from .analyzer import analyze, image_paths, register_heic
-from .catalog import DEFAULT_DB, all_people, connect, photo, photos, recognized_people, tag_person, upsert_photo
+from .catalog import (
+    DEFAULT_DB,
+    all_people,
+    connect,
+    photo,
+    photos,
+    recognized_people,
+    tag_person,
+    upsert_photo,
+)
 from .exporter import export
 from .selector import choose, parse_priorities, serialize_pick
 

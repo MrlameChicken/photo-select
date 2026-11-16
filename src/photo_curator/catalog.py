@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 DEFAULT_DB = Path.home() / ".local-photo-curator" / "catalog.db"
@@ -69,7 +69,7 @@ def photos(db: sqlite3.Connection) -> list[sqlite3.Row]:
 
 
 def upsert_photo(db: sqlite3.Connection, record: dict) -> None:
-    values = {**record, "analyzed_at": datetime.now(timezone.utc).isoformat()}
+    values = {**record, "analyzed_at": datetime.now(UTC).isoformat()}
     cols = ", ".join(PHOTO_COLUMNS)
     qs = ", ".join("?" for _ in PHOTO_COLUMNS)
     updates = ", ".join(f"{c}=excluded.{c}" for c in PHOTO_COLUMNS if c != "path")
@@ -87,7 +87,7 @@ def enroll_person(db: sqlite3.Connection, name: str, embedding: list[float], cou
         VALUES(?,?,?,?) ON CONFLICT(name) DO UPDATE SET
         embedding_json=excluded.embedding_json, reference_count=excluded.reference_count,
         updated_at=excluded.updated_at""",
-        (name, json.dumps(embedding), count, datetime.now(timezone.utc).isoformat()),
+        (name, json.dumps(embedding), count, datetime.now(UTC).isoformat()),
     )
     db.commit()
 

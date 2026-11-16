@@ -1,7 +1,9 @@
 import json
 from unittest.mock import patch
-from PIL import Image
+
 import pytest
+from PIL import Image
+
 from photo_curator.vision import evaluate
 
 
