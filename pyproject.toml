@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-photo-curator"
+version = "0.1.0"
+description = "Private, local-first photo selection with family priorities, image quality, and optional vision AI."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = ["Pillow>=10,<13", "numpy>=1.26,<3"]
+
+[project.optional-dependencies]
+heic = ["pillow-heif>=0.18"]
+faces = ["opencv-python-headless>=4.8,<5"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+photo-curator = "photo_curator.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
